@@ -1,5 +1,6 @@
 import Boom from '@hapi/boom';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 import User from '../models/user';
 
@@ -33,4 +34,34 @@ export function checkEmail(email) {
       else throw Boom.conflict('User already exists');
     })
     .catch();
+}
+
+/**
+ * Login a email.
+ *
+ * @param   {Object}  user
+ * @returns {Promise}
+ */
+export function loginUser(user) {
+  return new User()
+    .where('email', user.email)
+    .fetch()
+    .then((model) => {
+      return bcrypt.compare(user.password, model.get('password')).then((isMatch) => {
+        if (isMatch) {
+          const payload = {
+            id: model.get('id'),
+            email: model.get('email'),
+            name: model.get('name'),
+          };
+
+          return jwt.sign(payload, process.env.Secret, { expiresIn: 60 * 60 * 60 });
+        } else {
+          throw Boom.unauthorized('Password did not match');
+        }
+      });
+    })
+    .catch(User.NotFoundError, () => {
+      throw Boom.unauthorized('User not found');
+    });
 }

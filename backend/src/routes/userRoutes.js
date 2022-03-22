@@ -10,4 +10,9 @@ const router = Router();
  */
 router.post('/signup', userValidator, checkUserExists, userController.create);
 
+/**
+ * POST /api/signin
+ */
+router.post('/signin', userValidator, userController.login);
+
 export default router;
