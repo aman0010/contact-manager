@@ -5,10 +5,8 @@ import * as userService from '../services/userService';
 
 // Validation schema
 const schema = Joi.object({
-  name: Joi.string()
-    .label('Name')
-    .max(90)
-    .required()
+  email: Joi.string().label('Email').max(90).email().required(),
+  password: Joi.string().label('Password').max(90).required(),
 });
 
 /**
@@ -22,7 +20,7 @@ const schema = Joi.object({
 function userValidator(req, res, next) {
   return validate(req.body, schema)
     .then(() => next())
-    .catch(err => next(err));
+    .catch((err) => next(err));
 }
 
 /**
@@ -33,11 +31,11 @@ function userValidator(req, res, next) {
  * @param   {Function} next
  * @returns {Promise}
  */
-function findUser(req, res, next) {
+function checkUserExists(req, res, next) {
   return userService
-    .getUser(req.params.id)
+    .checkEmail(req.body.email)
     .then(() => next())
-    .catch(err => next(err));
+    .catch((err) => next(err));
 }
 
-export { findUser, userValidator };
+export { userValidator, checkUserExists };
