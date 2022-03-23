@@ -26,6 +26,6 @@ export function create(req, res, next) {
 export function login(req, res, next) {
   userService
     .loginUser(req.body)
-    .then((token) => res.status(HttpStatus.CREATED).json({ token }))
+    .then((data) => res.json({ data }))
     .catch((err) => next(err));
 }

@@ -4,57 +4,25 @@ import app from '../../src/index';
 import bookshelf from '../../src/db';
 
 /**
- * Tests for '/api/users'
+ * Tests for '/api/signup'
+ * Tests for '/api/signin'
  */
 describe('Users Controller Test', () => {
-  before(done => {
+  before((done) => {
     bookshelf
       .knex('users')
       .truncate()
       .then(() => done());
   });
 
-  it('should return list of users', done => {
-    request(app)
-      .get('/api/users')
-      .end((err, res) => {
-        expect(res.status).to.be.equal(200);
-        expect(res.body.data).to.be.an('array');
-        expect(res.body.data).to.have.lengthOf(0);
-
-        done();
-      });
-  });
-
-  it('should not create a new user if name is not provided', done => {
+  it('should create a new user with valid data', (done) => {
     const user = {
-      noname: 'Jane Doe'
+      email: 'test@test.com',
+      password: 'test',
     };
 
     request(app)
-      .post('/api/users')
-      .send(user)
-      .end((err, res) => {
-        const { code, message, details } = res.body.error;
-
-        expect(res.status).to.be.equal(400);
-        expect(code).to.be.equal(400);
-        expect(message).to.be.equal('Bad Request');
-        expect(details).to.be.an('array');
-        expect(details[0]).to.have.property('message');
-        expect(details[0]).to.have.property('param', 'name');
-
-        done();
-      });
-  });
-
-  it('should create a new user with valid data', done => {
-    const user = {
-      name: 'Jane Doe'
-    };
-
-    request(app)
-      .post('/api/users')
+      .post('/api/signup')
       .send(user)
       .end((err, res) => {
         const { data } = res.body;
@@ -62,75 +30,61 @@ describe('Users Controller Test', () => {
         expect(res.status).to.be.equal(201);
         expect(data).to.be.an('object');
         expect(data).to.have.property('id');
-        expect(data).to.have.property('name');
+        expect(data).to.have.property('email');
+        expect(data).to.have.property('password');
         expect(data).to.have.property('created_at');
         expect(data).to.have.property('updated_at');
-        expect(data.name).to.be.equal(user.name);
+        expect(data.email).to.be.equal(user.email);
 
         done();
       });
   });
 
-  it('should get information of user', done => {
+  it('should respond with bad request for empty JSON in request body', (done) => {
+    const user = {};
+
     request(app)
-      .get('/api/users/1')
-      .end((err, res) => {
-        const { data } = res.body;
-
-        expect(res.status).to.be.equal(200);
-        expect(data).to.be.an('object');
-        expect(data).to.have.property('id');
-        expect(data).to.have.property('name');
-        expect(data).to.have.property('created_at');
-        expect(data).to.have.property('updated_at');
-
-        done();
-      });
-  });
-
-  it('should respond with not found error if random user id is provided', done => {
-    request(app)
-      .get('/api/users/1991')
+      .post('/api/signup')
+      .send(user)
       .end((err, res) => {
         const { code, message } = res.body.error;
 
-        expect(res.status).to.be.equal(404);
-        expect(code).to.be.equal(404);
-        expect(message).to.be.equal('User not found');
+        expect(res.status).to.be.equal(400);
+        expect(code).to.be.equal(400);
+        expect(message).to.be.equal('Empty JSON');
 
         done();
       });
   });
 
-  it('should update a user if name is provided', done => {
+  it('should respond with "User already exists" if existing email provided', (done) => {
     const user = {
-      name: 'John Doe'
+      email: 'test@test.com',
+      password: 'test',
     };
 
     request(app)
-      .put('/api/users/1')
+      .post('/api/signup')
       .send(user)
       .end((err, res) => {
-        const { data } = res.body;
+        const { code, message } = res.body.error;
 
-        expect(res.status).to.be.equal(200);
-        expect(data).to.be.an('object');
-        expect(data).to.have.property('id');
-        expect(data).to.have.property('name');
-        expect(data).to.have.property('updated_at');
-        expect(data.name).to.be.equal(user.name);
+        expect(res.status).to.be.equal(409);
+        expect(code).to.be.equal(409);
+        expect(message).to.be.equal('User already exists');
 
         done();
       });
   });
 
-  it('should not update a user if name is not provided', done => {
+  it('should not create user if invalid email is provided', (done) => {
     const user = {
-      noname: 'John Doe'
+      email: 'test',
+      password: 'test',
     };
 
     request(app)
-      .put('/api/users/1')
+      .post('/api/signup')
       .send(user)
       .end((err, res) => {
         const { code, message, details } = res.body.error;
@@ -140,48 +94,66 @@ describe('Users Controller Test', () => {
         expect(message).to.be.equal('Bad Request');
         expect(details).to.be.an('array');
         expect(details[0]).to.have.property('message');
-        expect(details[0]).to.have.property('param', 'name');
+        expect(details[0]).to.have.property('param', 'email');
 
         done();
       });
   });
 
-  it('should delete a user if valid id is provided', done => {
+  it('should return login jwt token', (done) => {
+    const user = {
+      email: 'test@test.com',
+      password: 'test',
+    };
+
     request(app)
-      .delete('/api/users/1')
+      .post('/api/signin')
+      .send(user)
       .end((err, res) => {
-        expect(res.status).to.be.equal(204);
+        const { data } = res.body;
+
+        expect(res.status).to.be.equal(200);
+        expect(data).to.have.property('token');
 
         done();
       });
   });
 
-  it('should respond with not found error if random user id is provided for deletion', done => {
-    request(app)
-      .delete('/api/users/1991')
-      .end((err, res) => {
-        const { code, message } = res.body.error;
-
-        expect(res.status).to.be.equal(404);
-        expect(code).to.be.equal(404);
-        expect(message).to.be.equal('User not found');
-
-        done();
-      });
-  });
-
-  it('should respond with bad request for empty JSON in request body', done => {
-    const user = {};
+  it('should return "Password did not match" if wrong password provided', (done) => {
+    const user = {
+      email: 'test@test.com',
+      password: 'wrongpassword',
+    };
 
     request(app)
-      .post('/api/users')
+      .post('/api/signin')
       .send(user)
       .end((err, res) => {
         const { code, message } = res.body.error;
 
-        expect(res.status).to.be.equal(400);
-        expect(code).to.be.equal(400);
-        expect(message).to.be.equal('Empty JSON');
+        expect(res.status).to.be.equal(401);
+        expect(code).to.be.equal(401);
+        expect(message).to.be.equal('Password did not match');
+
+        done();
+      });
+  });
+
+  it('should return "User not found" if unregistered email provided', (done) => {
+    const user = {
+      email: 'unregistered@unregistered.com',
+      password: 'wrongpassword',
+    };
+
+    request(app)
+      .post('/api/signin')
+      .send(user)
+      .end((err, res) => {
+        const { code, message } = res.body.error;
+
+        expect(res.status).to.be.equal(401);
+        expect(code).to.be.equal(401);
+        expect(message).to.be.equal('User not found');
 
         done();
       });

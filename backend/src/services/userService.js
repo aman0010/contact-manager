@@ -55,7 +55,7 @@ export function loginUser(user) {
             name: model.get('name'),
           };
 
-          return jwt.sign(payload, process.env.Secret, { expiresIn: 60 * 60 * 60 });
+          return { token: jwt.sign(payload, process.env.Secret, { expiresIn: 60 * 60 * 60 }) };
         } else {
           throw Boom.unauthorized('Password did not match');
         }
