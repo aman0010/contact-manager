@@ -1,0 +1,28 @@
+import { Router } from 'express';
+
+import * as contactController from '../controllers/contacts';
+import { contactValidator, findContact } from '../validators/contactValidator';
+
+const router = Router();
+
+/**
+ * GET /api/contacts
+ */
+router.get('/', contactController.fetchAll);
+
+/**
+ * POST /api/contacts
+ */
+router.post('/', contactValidator, contactController.create);
+
+/**
+ * PUT /api/contacts/:id
+ */
+router.put('/:id', findContact, contactController.update);
+
+/**
+ * DELETE /api/contacts/:id
+ */
+router.delete('/:id', findContact, contactController.deleteContact);
+
+export default router;
