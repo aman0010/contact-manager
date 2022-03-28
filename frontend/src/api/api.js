@@ -11,3 +11,7 @@ export const signup = (email, password) => {
 export const logout = () => {
     localStorage.removeItem('token')
 }
+
+export const getContact = () => {
+    return axios.get(process.env.REACT_APP_API_URL + '/api/contacts')
+}
