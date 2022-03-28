@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Alert, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faKey } from "@fortawesome/free-solid-svg-icons";
+
+import * as api from '../api/api'
 
 export default function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -17,6 +20,15 @@ export default function Signup() {
             return setError("Passwords do not match");
         }
 
+        try {
+            setError("");
+            api.signup(email, password).then(res => {
+                console.log(res)
+                navigate("../", { replace: true });
+            }).catch(err => setError(err.response.data.error.message))
+        } catch {
+            setError("Failed to create an account");
+        }
     }
 
     return (
@@ -70,6 +82,7 @@ export default function Signup() {
                                 />
                             </Form.Group>
                             <Button
+                                // disabled={loading}
                                 className="w-50 mt-3"
                                 type="submit"
                             >

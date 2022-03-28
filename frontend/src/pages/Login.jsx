@@ -4,14 +4,33 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faKey } from "@fortawesome/free-solid-svg-icons";
 
+import * as api from '../api/api'
+
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     function handleSubmit(e) {
         e.preventDefault();
 
+        try {
+            setError("");
+            setLoading(true);
+            api.signin(email, password)
+                .then((res) => {
+                    localStorage.setItem('token', res.data.token)
+                    navigate("../", { replace: true });
+                })
+                .catch((err) => setError(err.response.data.error.message));
+        } catch {
+            setError("Failed to log in");
+        }
+
+        setLoading(false);
     }
 
     return (
@@ -25,7 +44,7 @@ export default function Login() {
                         <h2 className="text-center mb-4">Sign in</h2>
                         {error && <Alert variant="danger">{error}</Alert>}
                         <Form onSubmit={handleSubmit} className="user-form">
-                            <Form.Group id="email" className='mb-3'>
+                            <Form.Group id="email">
                                 <Form.Label>
                                     <FontAwesomeIcon
                                         icon={faEnvelope}
@@ -43,7 +62,7 @@ export default function Login() {
                                     required
                                 />
                             </Form.Group>
-                            <Form.Group id="password" className='mb-3'>
+                            <Form.Group id="password">
                                 <Form.Label>
                                     <FontAwesomeIcon
                                         icon={faKey}
@@ -62,6 +81,7 @@ export default function Login() {
                                 />
                             </Form.Group>
                             <Button
+                                disabled={loading}
                                 className="w-50 mt-3"
                                 type="submit"
                             >
