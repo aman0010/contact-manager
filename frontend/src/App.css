@@ -1,5 +1,11 @@
+:root {
+  --skyblue: #5BC0DE;
+}
+
 .App {
   text-align: center;
+  min-height: 100vh;
+  background-color: var(--skyblue) ;
 }
 
 .App-logo {
@@ -35,4 +41,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.col-center {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.user-form div {
+  text-align: left;
+  margin-bottom: 1rem;
 }
