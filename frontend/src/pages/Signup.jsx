@@ -32,7 +32,7 @@ export default function Signup() {
     }
 
     return (
-        <>
+        <div className='bg-skyblue'>
             <Col md={{ span: 4, offset: 4 }} className="col-center">
                 <Card className="card-shadow w-100">
                     <Card.Body>
@@ -95,6 +95,6 @@ export default function Signup() {
                     </Card.Body>
                 </Card>
             </Col>
-        </>
+        </div>
     );
 }

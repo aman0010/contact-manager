@@ -34,7 +34,7 @@ export default function Login() {
     }
 
     return (
-        <>
+        <div className='bg-skyblue'>
             <Col md={{ span: 4, offset: 4 }} className="col-center">
                 <Card
                     className="card-shadow w-100 bg-lightBlue"
@@ -95,6 +95,6 @@ export default function Login() {
                     </Card.Body>
                 </Card>
             </Col>
-        </>
+        </div>
     );
 }
