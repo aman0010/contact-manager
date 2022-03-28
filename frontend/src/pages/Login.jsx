@@ -22,7 +22,7 @@ export default function Login() {
             setLoading(true);
             api.signin(email, password)
                 .then((res) => {
-                    localStorage.setItem('token', res.data.token)
+                    localStorage.setItem('token', res.data.data.token)
                     navigate("../", { replace: true });
                 })
                 .catch((err) => setError(err.response.data.error.message));

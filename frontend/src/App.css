@@ -43,6 +43,10 @@
   }
 }
 
+.bg-blue {
+  background-color: #0d6efd !important;
+}
+
 .col-center {
   height: 100vh;
   display: flex;

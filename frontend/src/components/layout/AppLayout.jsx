@@ -1,10 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../sidebar/Sidebar";
 import React, { useState } from "react";
+import PrivateRoute from "../PrivateRoute";
+
 
 const AppLayout = () => {
     const [isOpen, setIsOpen] = useState(false);
-
 
     return (
         <div
@@ -13,8 +14,10 @@ const AppLayout = () => {
                 minHeight: "100vh",
             }}
         >
-            <Sidebar changeState={setIsOpen} />
-            <Outlet />
+            <PrivateRoute>
+                <Sidebar changeState={setIsOpen} />
+                <Outlet />
+            </PrivateRoute>
         </div>
     );
 };
