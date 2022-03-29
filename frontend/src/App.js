@@ -10,8 +10,7 @@ import AddContact from "./pages/AddContact";
 import UpdateContact from "./pages/UpdateContact";
 
 function App() {
-    const token = localStorage.getItem('token')
-    jwtInterceptor(token);		// axios request interceptor
+    jwtInterceptor();		// axios request interceptor
 
     return (
         <div className="App">
