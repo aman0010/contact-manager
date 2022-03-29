@@ -15,3 +15,8 @@ export const logout = () => {
 export const getContact = () => {
     return axios.get(process.env.REACT_APP_API_URL + '/api/contacts')
 }
+
+export const addContact = (contact) => {
+    return axios.post(process.env.REACT_APP_API_URL + '/api/contacts', contact)
+}
+

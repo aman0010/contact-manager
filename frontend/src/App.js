@@ -6,6 +6,7 @@ import AppLayout from './components/layout/AppLayout'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Home from "./pages/Home";
+import AddContact from "./pages/AddContact";
 
 function App() {
     const token = localStorage.getItem('token')
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/signin" element={<Login />} />
                 <Route path="/" element={<AppLayout />}>
                     <Route index element={<Home />} />
+                    <Route path='/new' element={<AddContact />} />
                 </Route>
             </Routes>
         </div>

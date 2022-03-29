@@ -3,6 +3,7 @@ import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faHome,
+    faPlus,
     faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,7 +24,7 @@ export default function Sidebar({ changeState }) {
             onToggle={(sidebar_open) => {
                 changeState(sidebar_open);
             }}
-            className="bg-blue"
+            className="bg-blue position-fixed"
         >
             <SideNav.Toggle />
             <SideNav.Nav defaultSelected={currentPage} className='d-flex flex-column' style={{height: 'calc(100% - 64px)'}}>
@@ -32,6 +33,12 @@ export default function Sidebar({ changeState }) {
                         <FontAwesomeIcon icon={faHome} size={"1x"} />
                     </NavIcon>
                     <NavText>Home</NavText>
+                </NavItem>
+                <NavItem eventKey="new">
+                    <NavIcon>
+                        <FontAwesomeIcon icon={faPlus} size={"1x"} />
+                    </NavIcon>
+                    <NavText>Create Contact</NavText>
                 </NavItem>
                 <NavItem eventKey="" onClick={logout} className="mt-auto">
                     <NavIcon>

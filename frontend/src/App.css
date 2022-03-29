@@ -50,6 +50,10 @@
   background-color: var(--skyblue) ;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .col-center {
   height: 100vh;
   display: flex;
