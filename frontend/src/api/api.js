@@ -12,11 +12,23 @@ export const logout = () => {
     localStorage.removeItem('token')
 }
 
-export const getContact = () => {
+export const getContacts = () => {
     return axios.get(process.env.REACT_APP_API_URL + '/api/contacts')
 }
+
+export const getContact = (id) => {
+    return axios.get(process.env.REACT_APP_API_URL + `/api/contacts/${id}`)
+}
+
 
 export const addContact = (contact) => {
     return axios.post(process.env.REACT_APP_API_URL + '/api/contacts', contact)
 }
 
+export const updateFavourite = (id, favourite) => {
+    return axios.put(process.env.REACT_APP_API_URL + `/api/contacts/${id}`, { favourite })
+}
+
+export const updateContact = (id, contact) => {
+    return axios.put(process.env.REACT_APP_API_URL + `/api/contacts/${id}`, contact)
+}

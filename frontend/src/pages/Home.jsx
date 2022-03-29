@@ -1,41 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar as favStar } from "@fortawesome/free-solid-svg-icons";
+import {
+    faEdit,
+    faStar as favStar,
+    faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 import * as api from "../api/api";
 
 export default function Home() {
     const [contacts, setContacts] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        api.getContact().then((res) => {
+        api.getContacts().then((res) => {
             setContacts(res.data.data);
         });
     }, []);
 
-    const favouriteContacts = contacts.filter((contact) => contact.favourite === 1)
+    const favouriteContacts = contacts.filter(
+        (contact) => contact.favourite === 1
+    );
 
-    const ContactBody = ({data}) => {
+    const updateFavourite = (id, favourite) => () => {
+        api.updateFavourite(id, favourite).then((res) => {
+            const newContacts = contacts.map((contact) => {
+                if (contact.id === res.data.data.id) return res.data.data;
+                return contact;
+            });
+            setContacts(newContacts);
+        });
+    };
+
+    const ContactBody = ({ label, data }) => {
         return (
             <>
                 <tr className="contact-subheading">
-                    <td>Favourite Contacts ({data.length})</td>
+                    <td>
+                        {label} ({data.length})
+                    </td>
                 </tr>
 
                 {data.map((contact) => (
                     <tr key={contact.id}>
                         <td>{contact.name}</td>
                         <td>{contact.email}</td>
-                        <td>{contact.phone[0][1]}</td>
+                        <td>{contact.phone[0] ? contact.phone[0][1] : null}</td>
                         <td>{contact.address}</td>
                         <td>
+                            {contact.favourite === 1 ? (
+                                <FontAwesomeIcon
+                                    icon={favStar}
+                                    size={"1x"}
+                                    className="mx-2 cursor-pointer"
+                                    onClick={updateFavourite(contact.id, false)}
+                                />
+                            ) : (
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    size={"1x"}
+                                    className="mx-2 cursor-pointer"
+                                    onClick={updateFavourite(contact.id, true)}
+                                />
+                            )}
                             <FontAwesomeIcon
-                                icon={
-                                    contact.favourite === 1 ? favStar : faStar
-                                }
+                                icon={faEdit}
                                 size={"1x"}
+                                className="mx-2 cursor-pointer"
+                                onClick={() => {
+                                    navigate(`/update/${contact.id}`);
+                                }}
+                            />
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                size={"1x"}
+                                className="mx-2 cursor-pointer"
                             />
                         </td>
                     </tr>
@@ -61,10 +103,13 @@ export default function Home() {
                     </tr>
                 </thead>
                 <tbody>
-                    <ContactBody label='Favourite Contacts' data={favouriteContacts} />
+                    <ContactBody
+                        label="Favourite Contacts"
+                        data={favouriteContacts}
+                    />
                 </tbody>
                 <tbody>
-                    <ContactBody label='Contacts' data={contacts} />
+                    <ContactBody label="Contacts" data={contacts} />
                 </tbody>
             </Table>
         </Container>

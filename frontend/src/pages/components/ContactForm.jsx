@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Col,
@@ -9,11 +9,19 @@ import {
 
 import PhoneInput from "./PhoneInput";
 
-export default function ContactForm({ handleSubmit }) {
+export default function ContactForm({ handleSubmit, data, title }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState([["", ""]]);
+
+    useEffect(() => {
+        if (!data) return
+        if (data.name) setName(data.name)
+        if (data.email) setEmail(data.email)
+        if (data.address) setAddress(data.address)
+        if (data.phone) setPhone(data.phone)
+    }, [data])
 
     const handlePhoneChange = (index, type) => (event) => {
         const value = event.target.value;
@@ -45,7 +53,7 @@ export default function ContactForm({ handleSubmit }) {
         <div>
             <Container>
                 <Col md={{ span: 8, offset: 2 }} className="py-4 text-start">
-                    <h3>Add Contact</h3>
+                    <h3>{title}</h3>
                     <Form onSubmit={onSubmit}>
                         <Form.Group className="mb-3" controlId="formName">
                             <FloatingLabel

@@ -7,6 +7,7 @@ import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Home from "./pages/Home";
 import AddContact from "./pages/AddContact";
+import UpdateContact from "./pages/UpdateContact";
 
 function App() {
     const token = localStorage.getItem('token')
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/" element={<AppLayout />}>
                     <Route index element={<Home />} />
                     <Route path='/new' element={<AddContact />} />
+                    <Route path='/update/:id' element={<UpdateContact />} />
                 </Route>
             </Routes>
         </div>

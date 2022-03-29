@@ -30,7 +30,7 @@ export default function AddContact() {
                     <span className='me-auto'>New Contact created!</span>
                 </Toast.Header>
             </Toast>
-            <ContactForm handleSubmit={handleSubmit}/>
+            <ContactForm handleSubmit={handleSubmit} title="Add Contact"/>
         </div>
     );
 }
