@@ -1,6 +1,7 @@
 import Boom from '@hapi/boom';
 
 import Contact from '../models/contact';
+import { upload } from '../firebase';
 
 /**
  * Create new contact.
@@ -72,4 +73,23 @@ export function updateContact(id, contact) {
  */
 export function deleteContact(id) {
   return new Contact({ id }).fetch().then((contact) => contact.destroy());
+}
+
+/**
+ * Update a image.
+ *
+ * @param   {File}  file
+ * @param   {Number|String}  user
+ * @param   {Number|String}  id
+ * @returns {Promise}
+ */
+export function updateImage(file, user, id) {
+  const ext = file.originalname.split('.').pop();
+  const filename = `${user.id}_${Date.now()}.${ext}`;
+
+  upload(filename, file); // Uploading file to firebase
+
+  return new Contact({ id }).save({
+    photograph: filename,
+  });
 }

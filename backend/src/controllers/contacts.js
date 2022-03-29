@@ -15,6 +15,19 @@ export function create(req, res, next) {
     .then((data) => res.status(HttpStatus.CREATED).json({ data }))
     .catch((err) => next(err));
 }
+/**
+ * Update image in a contact.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+export function updateImg(req, res, next) {
+  contactService
+    .updateImage(req.file, req.user, req.params.id)
+    .then((data) => res.status(HttpStatus.CREATED).json({ data }))
+    .catch((err) => next(err));
+}
 
 /**
  * Get all contacts.

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import multer from 'multer';
 
 import * as contactController from '../controllers/contacts';
 import { contactValidator, findContact } from '../validators/contactValidator';
@@ -19,6 +20,12 @@ router.get('/:id', findContact, contactController.fetch);
  * POST /api/contacts
  */
 router.post('/', contactValidator, contactController.create);
+
+/**
+ *
+ * PUT /api/contacts/image/:id
+ */
+router.put('/image/:id', multer().single('file'), contactController.updateImg);
 
 /**
  * PUT /api/contacts/:id
