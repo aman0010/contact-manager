@@ -70,7 +70,18 @@ export default function Home() {
 
                 {data.map((contact) => (
                     <tr key={contact.id}>
-                        <td>{contact.name}</td>
+                        <td>
+                            <img
+                                src={
+                                    contact.photograph
+                                        ? `https://firebasestorage.googleapis.com/v0/b/contact-manager-fee8f.appspot.com/o/${contact.photograph}?alt=media`
+                                        : "/default-user-image.png"
+                                }
+                                alt="contact"
+                                className="home-image-display"
+                            />
+                            {contact.name}
+                        </td>
                         <td>{contact.email}</td>
                         <td>{contact.phone[0] ? contact.phone[0][1] : null}</td>
                         <td>{contact.address}</td>

@@ -86,7 +86,7 @@ export default function ContactForm({ handleSubmit, data, title }) {
                                 <Col className="text-center">
                                     <img
                                         src={imageDisplay}
-                                        alt=""
+                                        alt="contact"
                                         className="image-display"
                                     />
                                 </Col>
