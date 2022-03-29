@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Toast } from "react-bootstrap";
 
 import ContactForm from "./components/ContactForm";
-import { getContact, updateContact } from "../api/api";
+import { getContact, updateContact, updateImage } from "../api/api";
 
 export default function UpdateContact() {
     const [contact, setContact] = useState({phone: []})
@@ -16,9 +16,15 @@ export default function UpdateContact() {
         });
     }, [id])
 
-    const handleSubmit = (contact) => {
+    const handleSubmit = (contact, image) => {
         updateContact(id, contact).then((res) => {
-            setShowToast(true);
+            if (image) {
+                updateImage(res.data.data.id, image).then((resp) => {
+                    setShowToast(true);
+                });
+            } else {
+                setShowToast(true);
+            }
         });
     };
 

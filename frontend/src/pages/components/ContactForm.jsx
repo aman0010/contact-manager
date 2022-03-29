@@ -25,7 +25,12 @@ export default function ContactForm({ handleSubmit, data, title }) {
         if (data.name) setName(data.name);
         if (data.email) setEmail(data.email);
         if (data.address) setAddress(data.address);
-        if (data.phone) setPhone(data.phone);
+        if (data.phone && data.phone.length>0) setPhone(data.phone);
+        if (data.photograph) {
+            setImage(data.photograph);
+            // Show in image display if available
+            setImageDisplay(`https://firebasestorage.googleapis.com/v0/b/contact-manager-fee8f.appspot.com/o/${data.photograph}?alt=media`)
+        }
     }, [data]);
 
     const handlePhoneChange = (index, type) => (event) => {
