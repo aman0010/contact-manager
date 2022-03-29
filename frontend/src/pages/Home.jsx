@@ -15,15 +15,25 @@ export default function Home() {
     const [contacts, setContacts] = useState([]);
     const navigate = useNavigate();
 
+    // Sort contact
+    function compare(a, b) {
+        if (a.name < b.name) {
+            return -1;
+        }
+        if (a.name > b.name) {
+            return 1;
+        }
+        return 0;
+    }
+
     useEffect(() => {
         api.getContacts().then((res) => {
-            setContacts(res.data.data);
+            setContacts(res.data.data.sort(compare));
         });
     }, []);
-
-    const favouriteContacts = contacts.filter(
-        (contact) => contact.favourite === 1
-    );
+    const favouriteContacts = contacts
+        .filter((contact) => contact.favourite === 1)
+        .sort(compare);
 
     const updateFavourite = (id, favourite) => () => {
         api.updateFavourite(id, favourite).then((res) => {
@@ -36,15 +46,17 @@ export default function Home() {
     };
 
     const deleteContact = (id) => () => {
-        if (!window.confirm('Delete contact?')) return
-        console.log(id)
-        api.deleteContact(id).then(res => {
-            if (res.status===204) {
-                const newContacts = contacts.filter((contact) => contact.id !== id);
+        if (!window.confirm("Delete contact?")) return;
+        console.log(id);
+        api.deleteContact(id).then((res) => {
+            if (res.status === 204) {
+                const newContacts = contacts.filter(
+                    (contact) => contact.id !== id
+                );
                 setContacts(newContacts);
             }
-        })
-    }
+        });
+    };
 
     const ContactBody = ({ label, data }) => {
         return (
