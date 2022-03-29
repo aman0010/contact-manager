@@ -36,3 +36,16 @@ export const updateContact = (id, contact) => {
 export const deleteContact = (id) => {
     return axios.delete(process.env.REACT_APP_API_URL + `/api/contacts/${id}`)
 }
+
+export const updateImage = (id, image) => {
+    // Create an object of formData
+    const formData = new FormData();
+
+    // Update the formData object
+    formData.append(
+        "file",
+        image,
+        image.name
+    );
+    return axios.put(process.env.REACT_APP_API_URL + `/api/contacts/image/${id}`, formData)
+}

@@ -75,3 +75,12 @@
 .contact-subheading:hover > * {
   box-shadow: none;
 }
+
+/* Image */
+.image-display {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  border: 1px solid;
+  object-fit: scale-down;
+}

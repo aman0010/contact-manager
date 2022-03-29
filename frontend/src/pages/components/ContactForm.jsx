@@ -5,6 +5,7 @@ import {
     Container,
     FloatingLabel,
     Form,
+    Row,
 } from "react-bootstrap";
 
 import PhoneInput from "./PhoneInput";
@@ -14,15 +15,18 @@ export default function ContactForm({ handleSubmit, data, title }) {
     const [email, setEmail] = useState("");
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState([["", ""]]);
+    const [image, setImage] = useState(null);
+
+    const [imageDisplay, setImageDisplay] = useState("/default-user-image.png");
 
     useEffect(() => {
         // Only updating data that are available
-        if (!data) return
-        if (data.name) setName(data.name)
-        if (data.email) setEmail(data.email)
-        if (data.address) setAddress(data.address)
-        if (data.phone) setPhone(data.phone)
-    }, [data])
+        if (!data) return;
+        if (data.name) setName(data.name);
+        if (data.email) setEmail(data.email);
+        if (data.address) setAddress(data.address);
+        if (data.phone) setPhone(data.phone);
+    }, [data]);
 
     const handlePhoneChange = (index, type) => (event) => {
         const value = event.target.value;
@@ -41,14 +45,22 @@ export default function ContactForm({ handleSubmit, data, title }) {
         setPhone(newPhone);
     };
 
+    const onImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            const img = event.target.files[0];
+            setImage(img);
+            setImageDisplay(URL.createObjectURL(img));
+        }
+    };
+
     const cleanPhone = (phone) => {
         return phone.filter((p) => p[0] || p[1]);
     };
 
     const onSubmit = (event) => {
-        event.preventDefault()
-        handleSubmit({name, email, address, phone: cleanPhone(phone)})
-    }
+        event.preventDefault();
+        handleSubmit({ name, email, address, phone: cleanPhone(phone) }, image);
+    };
 
     return (
         <div>
@@ -56,6 +68,27 @@ export default function ContactForm({ handleSubmit, data, title }) {
                 <Col md={{ span: 8, offset: 2 }} className="py-4 text-start">
                     <h3>{title}</h3>
                     <Form onSubmit={onSubmit}>
+                        <Form.Group className="mb-3" controlId="formPhoto">
+                            <Form.Label>Photo</Form.Label>
+                            <Row className="align-items-center">
+                                <Col md={8}>
+                                    <Form.Control
+                                        type="file"
+                                        placeholder="photo"
+                                        onChange={onImageChange}
+                                    />
+                                </Col>
+                                <Col className="text-center">
+                                    <img
+                                        src={imageDisplay}
+                                        alt=""
+                                        className="image-display"
+                                    />
+                                </Col>
+                            </Row>
+                        </Form.Group>
+                        <hr />
+
                         <Form.Group className="mb-3" controlId="formName">
                             <FloatingLabel
                                 controlId="floatingInput"
@@ -114,11 +147,6 @@ export default function ContactForm({ handleSubmit, data, title }) {
                             handleAddPhone={handleAddPhone}
                             handleRemovePhone={handleRemovePhone}
                         />
-
-                        <Form.Group className="mb-3" controlId="formPhoto">
-                            <Form.Label>Photo</Form.Label>
-                            <Form.Control type="file" placeholder="photo" />
-                        </Form.Group>
 
                         <Button variant="primary" type="submit">
                             Save

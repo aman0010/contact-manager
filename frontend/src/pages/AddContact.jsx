@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { Toast } from "react-bootstrap";
 
-import { addContact } from "../api/api";
+import { addContact, updateImage } from "../api/api";
 import ContactForm from "./components/ContactForm";
 
 export default function AddContact() {
     const [showToast, setShowToast] = useState(false);
 
-    const handleSubmit = (contact) => {
-        addContact(contact).then(
-            (res) => {
+    const handleSubmit = (contact, image) => {
+        addContact(contact).then((res) => {
+            if (image) {
+                updateImage(res.data.data.id, image).then((resp) => {
+                    setShowToast(true);
+                });
+            } else {
                 setShowToast(true);
             }
-        );
+        });
     };
 
     return (
@@ -25,12 +29,12 @@ export default function AddContact() {
                 delay={5000}
                 autohide
             >
-                <Toast.Header className='bg-success text-white'>
-                    <span className='me-auto'>New Contact created!</span>
+                <Toast.Header className="bg-success text-white">
+                    <span className="me-auto">New Contact created!</span>
                 </Toast.Header>
             </Toast>
 
-            <ContactForm handleSubmit={handleSubmit} title="Add Contact"/>
+            <ContactForm handleSubmit={handleSubmit} title="Add Contact" />
         </div>
     );
 }
