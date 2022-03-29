@@ -8,8 +8,8 @@ const schema = Joi.object({
   name: Joi.string().label('Name').max(90).required(),
   phone: Joi.array().label('Phone'),
   photograph: Joi.string().label('photograph').max(90),
-  email: Joi.string().label('email').max(90),
-  address: Joi.string().label('address').max(90),
+  email: Joi.string().label('email').max(90).allow(''),
+  address: Joi.string().label('address').max(90).allow(''),
   favourite: Joi.string().label('favourite').max(90),
 });
 

@@ -24,9 +24,22 @@ export function create(req, res, next) {
  * @param {Function} next
  */
 export function fetchAll(req, res, next) {
-  // console.log(req)
   contactService
     .getAllContacts(req.user.id)
+    .then((data) => res.json({ data }))
+    .catch((err) => next(err));
+}
+
+/**
+ * Get a contacts.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ */
+export function fetch(req, res, next) {
+  contactService
+    .getContact(req.params.id, req.user.id)
     .then((data) => res.json({ data }))
     .catch((err) => next(err));
 }

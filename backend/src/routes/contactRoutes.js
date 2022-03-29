@@ -11,6 +11,11 @@ const router = Router();
 router.get('/', contactController.fetchAll);
 
 /**
+ * GET /api/contacts/:id
+ */
+router.get('/:id', findContact, contactController.fetch);
+
+/**
  * POST /api/contacts
  */
 router.post('/', contactValidator, contactController.create);
