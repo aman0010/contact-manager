@@ -32,3 +32,7 @@ export const updateFavourite = (id, favourite) => {
 export const updateContact = (id, contact) => {
     return axios.put(process.env.REACT_APP_API_URL + `/api/contacts/${id}`, contact)
 }
+
+export const deleteContact = (id) => {
+    return axios.delete(process.env.REACT_APP_API_URL + `/api/contacts/${id}`)
+}

@@ -35,6 +35,17 @@ export default function Home() {
         });
     };
 
+    const deleteContact = (id) => () => {
+        if (!window.confirm('Delete contact?')) return
+        console.log(id)
+        api.deleteContact(id).then(res => {
+            if (res.status===204) {
+                const newContacts = contacts.filter((contact) => contact.id !== id);
+                setContacts(newContacts);
+            }
+        })
+    }
+
     const ContactBody = ({ label, data }) => {
         return (
             <>
@@ -78,6 +89,7 @@ export default function Home() {
                                 icon={faTrash}
                                 size={"1x"}
                                 className="mx-2 cursor-pointer"
+                                onClick={deleteContact(contact.id)}
                             />
                         </td>
                     </tr>
