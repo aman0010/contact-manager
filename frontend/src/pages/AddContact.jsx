@@ -10,7 +10,6 @@ export default function AddContact() {
     const handleSubmit = (contact) => {
         addContact(contact).then(
             (res) => {
-                console.log(res);
                 setShowToast(true);
             }
         );
@@ -30,6 +29,7 @@ export default function AddContact() {
                     <span className='me-auto'>New Contact created!</span>
                 </Toast.Header>
             </Toast>
+
             <ContactForm handleSubmit={handleSubmit} title="Add Contact"/>
         </div>
     );

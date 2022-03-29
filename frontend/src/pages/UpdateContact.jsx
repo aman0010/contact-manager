@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Toast } from "react-bootstrap";
 
 import ContactForm from "./components/ContactForm";
 import { getContact, updateContact } from "../api/api";
-import { useParams } from "react-router-dom";
 
 export default function UpdateContact() {
     const [contact, setContact] = useState({phone: []})
@@ -36,6 +36,7 @@ export default function UpdateContact() {
                     <span className="me-auto">Contact updated!</span>
                 </Toast.Header>
             </Toast>
+
             <ContactForm handleSubmit={handleSubmit} data={contact} title="Update Contact"/>
         </div>
     );

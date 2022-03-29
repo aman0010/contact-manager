@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Form, Button, Card, Alert, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { Form, Button, Card, Alert, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faKey } from "@fortawesome/free-solid-svg-icons";
 
@@ -42,6 +42,7 @@ export default function Login() {
                 >
                     <Card.Body>
                         <h2 className="text-center mb-4">Sign in</h2>
+
                         {error && <Alert variant="danger">{error}</Alert>}
                         <Form onSubmit={handleSubmit} className="user-form">
                             <Form.Group id="email">
@@ -62,6 +63,7 @@ export default function Login() {
                                     required
                                 />
                             </Form.Group>
+
                             <Form.Group id="password">
                                 <Form.Label>
                                     <FontAwesomeIcon
@@ -80,6 +82,7 @@ export default function Login() {
                                     required
                                 />
                             </Form.Group>
+
                             <Button
                                 disabled={loading}
                                 className="w-50 mt-3"

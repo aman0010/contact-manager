@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Form, Button, Card, Alert, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { Form, Button, Card, Alert, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faKey } from "@fortawesome/free-solid-svg-icons";
 
-import * as api from '../api/api'
+import * as api from "../api/api";
 
 export default function Signup() {
     const [email, setEmail] = useState("");
@@ -22,26 +22,32 @@ export default function Signup() {
 
         try {
             setError("");
-            api.signup(email, password).then(res => {
-                console.log(res)
-                navigate("../", { replace: true });
-            }).catch(err => setError(err.response.data.error.message))
+            api.signup(email, password)
+                .then((res) => {
+                    navigate("../", { replace: true });
+                })
+                .catch((err) => setError(err.response.data.error.message));
         } catch {
             setError("Failed to create an account");
         }
     }
 
     return (
-        <div className='bg-skyblue'>
+        <div className="bg-skyblue">
             <Col md={{ span: 4, offset: 4 }} className="col-center">
                 <Card className="card-shadow w-100">
                     <Card.Body>
                         <h2 className="text-center mb-4">Sign Up</h2>
+
                         {error && <Alert variant="danger">{error}</Alert>}
                         <Form onSubmit={handleSubmit} className="user-form">
                             <Form.Group id="email">
                                 <Form.Label>
-                                    <FontAwesomeIcon icon={faEnvelope} size={"1x"} className='me-1'/>
+                                    <FontAwesomeIcon
+                                        icon={faEnvelope}
+                                        size={"1x"}
+                                        className="me-1"
+                                    />
                                     Email
                                 </Form.Label>
                                 <Form.Control
@@ -53,9 +59,14 @@ export default function Signup() {
                                     required
                                 />
                             </Form.Group>
+
                             <Form.Group id="password">
                                 <Form.Label>
-                                    <FontAwesomeIcon icon={faKey} size={"1x"} className='me-1'/>
+                                    <FontAwesomeIcon
+                                        icon={faKey}
+                                        size={"1x"}
+                                        className="me-1"
+                                    />
                                     Password
                                 </Form.Label>
                                 <Form.Control
@@ -67,9 +78,14 @@ export default function Signup() {
                                     required
                                 />
                             </Form.Group>
+
                             <Form.Group id="password-confirm">
                                 <Form.Label>
-                                    <FontAwesomeIcon icon={faKey} size={"1x"} className='me-1'/>
+                                    <FontAwesomeIcon
+                                        icon={faKey}
+                                        size={"1x"}
+                                        className="me-1"
+                                    />
                                     Confirm Password
                                 </Form.Label>
                                 <Form.Control
@@ -81,11 +97,8 @@ export default function Signup() {
                                     required
                                 />
                             </Form.Group>
-                            <Button
-                                // disabled={loading}
-                                className="w-50 mt-3"
-                                type="submit"
-                            >
+
+                            <Button className="w-50 mt-3" type="submit">
                                 Sign Up
                             </Button>
                         </Form>

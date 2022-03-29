@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Container, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Container, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faEdit,
@@ -31,6 +31,7 @@ export default function Home() {
             setContacts(res.data.data.sort(compare));
         });
     }, []);
+
     const favouriteContacts = contacts
         .filter((contact) => contact.favourite === 1)
         .sort(compare);
@@ -74,6 +75,7 @@ export default function Home() {
                         <td>{contact.phone[0] ? contact.phone[0][1] : null}</td>
                         <td>{contact.address}</td>
                         <td>
+                            {/* Show different star if favourite */}
                             {contact.favourite === 1 ? (
                                 <FontAwesomeIcon
                                     icon={favStar}
@@ -89,6 +91,7 @@ export default function Home() {
                                     onClick={updateFavourite(contact.id, true)}
                                 />
                             )}
+
                             <FontAwesomeIcon
                                 icon={faEdit}
                                 size={"1x"}

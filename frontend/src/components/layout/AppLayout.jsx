@@ -1,11 +1,12 @@
-import { Outlet } from "react-router-dom";
-import Sidebar from "../sidebar/Sidebar";
 import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
+
+import Sidebar from "../sidebar/Sidebar";
 import PrivateRoute from "../PrivateRoute";
 
 
 const AppLayout = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);        // Sidebar open state
 
     return (
         <div

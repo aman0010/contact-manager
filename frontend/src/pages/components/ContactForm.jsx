@@ -16,6 +16,7 @@ export default function ContactForm({ handleSubmit, data, title }) {
     const [phone, setPhone] = useState([["", ""]]);
 
     useEffect(() => {
+        // Only updating data that are available
         if (!data) return
         if (data.name) setName(data.name)
         if (data.email) setEmail(data.email)
